@@ -1,16 +1,8 @@
-version: '3'
+version: '3.2'
 volumes:
   kong-db:
     driver: local
 services:
-  redis:
-    image: redis:latest
-    restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass password
-    volumes:
-      - ./redis:/data
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
@@ -18,12 +10,16 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - '22181:2181'
+    networks:
+      - kafka
   kafka:
     image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
     ports:
       - '29092:29092'
+    networks:
+      - kafka
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -121,4 +117,8 @@ services:
       - "1337:1337"
 networks:
   kong-net:
-    driver: bridge
+    driver: overlay
+    attachable: true
+  kafka:
+    driver: overlay
+    attachable: true

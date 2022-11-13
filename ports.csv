@@ -1,0 +1,12 @@
+apps,iam,crud,kong-net,kafka,oms
+zookeeper,,,,22181:2181,
+kafka,,,,29092,
+kong-database,,,5432,,
+kong,,,"9001,9000",,
+konga,,,1337,,
+iam,8080,,8080,,
+crud,,8081,,,
+oms,,,8082,8082,8082
+redis,6379,,,,
+mysql_iam,3306,,,,
+postgres_crud,,5434:5432,,,
